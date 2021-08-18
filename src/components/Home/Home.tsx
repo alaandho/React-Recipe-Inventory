@@ -74,7 +74,7 @@ export const Home = ( props:Props) => {
             <nav>
                 <div className={classes.navbar_container}>
                     <h1 className={ `${classes.logo} `}>
-                        <Link to='/' className={ `${classes.logo_a} ${classes.logo_navigation}` }>Ala's Home Recipe's</Link>
+                        <Link to='/' className={ `${classes.logo_a} ${classes.logo_navigation}` }>Home Recipe's</Link>
                     </h1>
                     <ul className={ `${classes.navigation} ${classes.logo_navigation}` }>
                         <li>
