@@ -30,6 +30,7 @@ import clsx from 'clsx';
 import { RouteComponentProps, withRouter, Switch, Route } from "react-router-dom";
 import { useState } from 'react';
 import { DataTable, RecipeForm } from '../../components';
+import chili_image from '../../assets/images/chili.jpg';
 
 const drawerWidth = 240;
 
@@ -37,6 +38,13 @@ const useStyles = makeStyles((theme: Theme) =>
     createStyles({
         root: {
             display: 'flex',
+            backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(${chili_image});`,
+            width: '100%',
+            height: '100%',
+            backgroundSize: 'cover',
+            backgroundRepeat: 'no-repeat',
+            backgroundPosition: 'center',
+            position: 'absolute',
         },
         appBar: {
             transition: theme.transitions.create(['margin', 'width'], {

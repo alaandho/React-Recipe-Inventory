@@ -9,7 +9,6 @@ const rootSlice = createSlice({
         meat_or_veg: 'beef or chicken',
         garnishes: 'scallions, cilantro, lime, thai basil, bean sprouts',
         spices: 'star anise, cinnamon stick, coriander, fennel, dates',
-        sauces: 'hoissen, sirracha'
     },
     reducers: {
         chooseName: (state, action) => { state.name = action.payload},

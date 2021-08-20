@@ -65,10 +65,6 @@ export const RecipeForm = (props:RecipeFormProps) => {
                     <label htmlFor="spices">Spices</label>
                     <Input {...register('spices')} name="spices" placeholder="Spices"/>
                 </div>
-                <div>
-                    <label htmlFor="sauces">Sauces</label>
-                    <Input {...register('sauces')} name="sauces" placeholder="Sauces"/>
-                </div>
                 <Button type='submit'>Submit</Button>
             </form>
         </div>
