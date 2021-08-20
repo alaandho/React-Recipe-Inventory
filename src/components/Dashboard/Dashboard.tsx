@@ -15,15 +15,21 @@ import { Drawer as MUIDrawer,
     Typography,
     Divider,
     Button,
-    CssBaseline
+    CssBaseline,
+    Dialog, 
+    DialogActions, 
+    DialogContent, 
+    DialogContentText,
+    DialogTitle
 } from '@material-ui/core';
+
 import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import clsx from 'clsx';
 import { RouteComponentProps, withRouter, Switch, Route } from "react-router-dom";
 import { useState } from 'react';
-import { DataTable } from '../../components';
+import { DataTable, RecipeForm } from '../../components';
 
 const drawerWidth = 240;
 
@@ -107,6 +113,7 @@ export const Dashboard = withRouter(( props:DashProps ) => {
     const classes = useStyles();
     const theme = useTheme();
     const [open, setOpen] = useState(false);
+    const [dialogOpen, setDialogOpen] = useState(false);
 
     //functions to set the state of 'open'
     const handleDrawerOpen = () => {
@@ -115,6 +122,15 @@ export const Dashboard = withRouter(( props:DashProps ) => {
 
     const handleDrawerClose = () => {
         setOpen(false);
+    };
+
+    // Handle Dialog Open/Close
+    const handleDialogClickOpen = () => {
+        setDialogOpen(true);
+    };
+
+    const handleDialogClickClose = () => {
+        setDialogOpen(false);
     };
 
     //organization - keeping a few items for later
@@ -150,7 +166,17 @@ export const Dashboard = withRouter(( props:DashProps ) => {
                     <Typography variant="h6" noWrap>
                         Dashboard
                     </Typography>
-                    <Button className={classes.toolbar_button}>Add New Recipe</Button>
+                    <Button className={classes.toolbar_button} onClick={handleDialogClickOpen}>Create New Recipe</Button>
+                    <Dialog open={dialogOpen} onClose={handleDialogClickClose} aria-labelledby="form-dialog-title">
+                        <DialogTitle id="form-dialog-title">Add New Recipe</DialogTitle>
+                        <DialogContent>
+                            <RecipeForm />
+                        </DialogContent>
+                        <DialogActions>
+                            <Button onClick = {handleDialogClickClose} color="primary">Cancel</Button>
+                            <Button onClick={handleDialogClickClose} color = "primary">Done</Button> 
+                        </DialogActions>
+                    </Dialog>
                 </Toolbar>
             </AppBar>
                 <MUIDrawer

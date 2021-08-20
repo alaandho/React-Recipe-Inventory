@@ -3,6 +3,7 @@ import {makeStyles} from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import noodle_image from '../../assets/images/noodles.jpg';
 import{Link} from 'react-router-dom';
+import { AuthCheck } from 'reactfire';
 
 
 interface Props{
@@ -74,25 +75,31 @@ export const Home = ( props:Props) => {
             <nav>
                 <div className={classes.navbar_container}>
                     <h1 className={ `${classes.logo} `}>
-                        <Link to='/' className={ `${classes.logo_a} ${classes.logo_navigation}` }>Home Recipe's</Link>
+                        <Link to='/' className={ `${classes.logo_a} ${classes.logo_navigation}` }>Traditional Home Recipe's</Link>
                     </h1>
                     <ul className={ `${classes.navigation} ${classes.logo_navigation}` }>
-                        <li>
+                    <li>
                             <Link to='/' className={classes.nav_a}>Home</Link>
                         </li>
-                        <li>
-                            <Link to='/signin' className={classes.nav_a}>Sign In</Link>
-                        </li>
+                        <AuthCheck fallback ={
+                            <li>
+                                <Link to='/signin' className={classes.nav_a}>Sign In</Link>
+                            </li>
+                        }>
                         <li>
                             <Link to='/dashboard' className={classes.nav_a}>Dashboard</Link>
                         </li>
+                        <li>
+                            <Link to="/signout" className={classes.nav_a}>Sign Out</Link>
+                        </li>
+                        </AuthCheck>
                     </ul>
                 </div>
             </nav>
             <main className={classes.main}>
                 <div className={classes.main_text}>
                     <h1>{ props.title }</h1>
-                    <p>Discover Traditional Vietnamese Recipes</p>
+                    <p>Welcome to Operator's Inventory</p>
                     <Button color='primary' variant="contained">Click Me</Button>
                 </div>
             </main>

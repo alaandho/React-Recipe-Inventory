@@ -1,54 +1,100 @@
-import React from 'react';
-import { DataGrid, GridColDef, GridValueGetterParams } from '@material-ui/data-grid';
+import React, {useState} from 'react';
+import { DataGrid, GridColDef, GridValueGetterParams, GridRowModel } from '@material-ui/data-grid';
+import { server_calls } from '../../api'; 
+import { useGetData } from '../../custom-hooks';
+import { 
+    Button,
+    Dialog,
+    DialogActions,
+    DialogContent,
+    DialogContentText,
+    DialogTitle 
+} from '@material-ui/core'; 
+import { RecipeForm } from '../../components/RecipeForm';
 
 const columns: GridColDef[] = [
-    { field: 'id', headerName: 'ID', width: 100 },
+    { field: 'id', headerName: 'ID', width: 170 },
     {
-        field: 'recipeName',
-        headerName: 'Recipe Name',
-        width: 250,
+        field: 'name',
+        headerName: 'Name of Dish',
+        width: 200,
     },
     {
-        field: 'foodType',
-        headerName: 'Food Type',
-        width: 250,
+        field: 'description',
+        headerName: 'Description',
+        width: 200,
     },
     {
-        field: 'cookTime',
+        field: 'meat_or_veg',
+        headerName: 'Meat or Veggie Type',
+        width: 180,
+    },
+    {
+        field: 'cook_time',
         headerName: 'Cook Time',
-        type: 'number',
-        width: 110,
-    },
-    {
-        field: 'recipeName',
-        headerName: 'Recipe Name',
-        description: 'This column has a value getter and is not sortable.',
-        sortable: false,
-        width: 160,
+        width: 140,
         // valueGetter: (params: GridValueGetterParams) =>
         //     `${params.getValue(params.id, 'recipeName') || ''} ${
         //         params.getValue(params.id, 'foodType') || ''}`,
     },
 ];
 
-const rows = [
-    { id: 1, recipeName: 'Banh Mi', foodType: 'Sandwhich', cookTime: 30 },
-    { id: 2, recipeName: 'Pho', foodType: 'Noodle Soup', cookTime: 600 },
-    { id: 3, recipeName: 'Banh Xeo', foodType: 'Vietnamese Crepe', cookTime: 45 },
-    { id: 4, recipeName: 'Lemongrass Chicken', foodType: 'Meat', cookTime: 35 },
-    { id: 5, recipeName: 'Spring Rolls', foodType: 'Appeteizer', cookTime: 40 },
-    { id: 6, recipeName: 'Vermicelli', foodType: 'Cold Noodles', cookTime: 150 },
-    { id: 7, recipeName: 'Sweet Fish Sauce', foodType: 'Sauce', cookTime: 15 },
-    { id: 8, recipeName: 'Sticky Rice', foodType: 'Sweet Rice', cookTime: 180 },
-    { id: 9, recipeName: 'Papaya Salad', foodType: 'Salad', cookTime: 65 },
-    { id: 10, recipeName: 'Pandan Waffles', foodType: 'Desert', cookTime: 45 },
-];
+interface gridData{
+    id?:string;
+}
+
 
 export const DataTable = () => {
+    let {recipeData, getData} = useGetData();
+    let [open, setOpen] = useState(false);
+    let [gridData, setData] = useState<gridData>({id:''});
+
+    let handleOpen = () => {
+        setOpen(true)
+    }
+
+    let handleClose = () => {
+        setOpen(false)
+        getData() 
+        // automatic refresh/update
+    }
+
+    let deleteData = () => {
+        server_calls.delete(gridData.id!)
+        getData()
+        // automatic delete
+    }
+    
+    console.log(gridData.id)
+
+    let handleCheckbox = (id:GridRowModel) =>{
+        if(id[0] === undefined){
+            setData({id:''})
+        }else{
+            setData({id:id[0].toString()})
+        }
+    }
+
     return (
         <div style={{ height: 400, width: '100%' }}>
-            <h2>Recipe Inventory</h2>
-            <DataGrid rows={rows} columns={columns} pageSize={10} checkboxSelection />
+            <h2>Recipes In Inventory</h2>
+            <DataGrid rows={recipeData} columns={columns} pageSize={5} checkboxSelection onSelectionModelChange ={handleCheckbox} />
+            {console.log(gridData)}
+
+        <Button onClick={handleOpen}>Update</Button>
+        <Button variant="contained" color="secondary" onClick={deleteData}>Delete</Button>
+
+        {/* Dialog Pop Up begin */}
+        <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
+            <DialogTitle id="form-dialog-title">Update Recipe</DialogTitle>
+            <DialogContent>
+                    <RecipeForm id={gridData.id!}/>
+            </DialogContent>
+            <DialogActions>
+                <Button onClick = {handleClose} color="primary">Cancel</Button>
+                <Button onClick={handleClose} color = "primary">Done</Button> 
+            </DialogActions>
+        </Dialog>
         </div>
     )
 }
